@@ -10,7 +10,7 @@ export const SearchBox = ({ search, updateSearch, placeholder }) => (
       onChange={updateSearch}
       placeholder={placeholder}
     />
-    <button type="submit" className="search-button">
+    <button type="submit" onClick="myFunction()" className="search-button">
       <i className="fas fa-search" />
     </button>
   </div>

@@ -30,6 +30,8 @@ const App = () => {
 
   const getSearch = e => {
     e.preventDefault();
+    if(!search)
+      alert("Search box can't be empty");
     setQuery(search);
   };
 
