@@ -46,6 +46,17 @@ def recipe_recommendation():
 
     return 'Done',201
 
+@main.route('/delete_favourite',methods=['POST'])
+def delete_favourite():
+    recipe_data = request.get_json()
+
+    Favorites.query.filter(Favorites.title==recipe_data).delete()
+    db.session.commit()
+    #df1.append([recipe_data['title'],recipe_data['calories'],recipe_data['ingredients']])
+    #print(df1)
+
+    return 'Done',201
+
 @main.route('/recipe_recommendation',methods=['GET'])
 def add_recipes():
     #print("NOW HERE")
