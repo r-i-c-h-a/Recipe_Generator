@@ -32,6 +32,10 @@ const App = () => {
     e.preventDefault();
     if(!search)
       alert("Search box can't be empty");
+    for(e.target.value of search.split(',')){
+        if (!isNaN(e.target.value))
+          alert("Please enter only text values");
+        }
     setQuery(search);
   };
 
