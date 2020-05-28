@@ -1,0 +1,44 @@
+@import url("https://www.w3schools.com/w3css/4/w3.css");
+
+.w3-myfont {
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.title {
+    color: #f9748f;
+    font-weight: 200;
+    font-size: 3rem;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  
+  .column {
+    float: left;
+    width: 33.33%;
+    padding: 5px;
+  }
+  
+  /* Clearfix (clear floats) */
+  .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  h1 {
+    font-size: 70px;
+    line-height: 40px;
+    color:#f9748f;
+    text-align: center;
+}
+
+.wrapper {
+  text-align: center;
+}
+
+.button {
+  position: absolute;
+  top: 50%;
+}
