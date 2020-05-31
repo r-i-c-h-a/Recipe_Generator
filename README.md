@@ -1,6 +1,15 @@
-## RECIPE GENERATOR
+## RECIPE GENERATOR 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+Tech stack to implement this project -
+- Frontend framework	: ReactJS
+- Backend framework		: Flask, Flask-SQLalchemy
+- Database			      : sqlite3
+- System testing      : Selenium
+- Unit testing		  	: pytest
+- Performance testing : Postman and K6
+
 
 ## Available Scripts
 
