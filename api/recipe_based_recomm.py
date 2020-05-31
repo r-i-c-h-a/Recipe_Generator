@@ -24,45 +24,63 @@ df = return_csv()
 dff = gen_bag_of_words(df)
 print("I added to db")
 
+#Add favourite recipe
 @main.route('/recipe_recommendation',methods=['POST'])
 def recipe_recommendation():
     #print("Now here")
     recipe_data = request.get_json()
+
+    if not recipe_data:
+        return "Empty request",400
 
     #recipe_list = recipe['recipes']
 
     #df1 = []
 
     #for recipe_data in recipe_list:
-    new_recipe = Favorites(title=recipe_data['title'],calories=recipe_data['calories'],\
-    ingredients=str(recipe_data['ingredients']),image=recipe_data['image'],site=recipe_data['site'])
-    exists = db.session.query(Favorites.title).filter_by(title=new_recipe.title).scalar() is not None
-    if(not exists):
-        db.session.add(new_recipe)
-        db.session.commit()
+    try:
+        new_recipe = Favorites(title=recipe_data['title'],calories=recipe_data['calories'],\
+        ingredients=str(recipe_data['ingredients']),image=recipe_data['image'],site=recipe_data['site'])
+        exists = db.session.query(Favorites.title).filter_by(title=new_recipe.title).scalar() is not None
+        if(not exists):
+            db.session.add(new_recipe)
+            db.session.commit()
+        else:
+            return "Duplicate entry",409
+    except:
+        return 'Invalid Request',400
     #df1.append([recipe_data['title'],recipe_data['calories'],recipe_data['ingredients']])
     #print(df1)
-
-
     return 'Done',201
 
+#Delete favourite
 @main.route('/delete_favourite',methods=['POST'])
 def delete_favourite():
     recipe_data = request.get_json()
 
-    Favorites.query.filter(Favorites.title==recipe_data).delete()
+    if not recipe_data:
+        return "Nothing to delete",204
+
+    if Favorites.query.filter(Favorites.title==recipe_data).count():
+        Favorites.query.filter(Favorites.title==recipe_data).delete()
+    else:
+        return "Invalid Request",400
     db.session.commit()
     #df1.append([recipe_data['title'],recipe_data['calories'],recipe_data['ingredients']])
     #print(df1)
 
-    return 'Done',201
+    return 'Done',200
 
+#Recommend recipes based on favourite
 @main.route('/recipe_recommendation',methods=['GET'])
 def add_recipes():
     #print("NOW HERE")
     df1 = []
 
     fav_list = Favorites.query.all()
+
+    if not fav_list:
+        return "No Favorites Yet",204
 
     for fav in fav_list:
         df1.append([fav.title,fav.calories,fav.ingredients])
@@ -87,14 +105,17 @@ def add_recipes():
             'fat':food.fat,'sodium':food.sodium,'protein':food.protein,'ingredients':food.ingredients,'directions':food.directions})
     
 
-    return jsonify({'recommendations': final})
+    return jsonify({'recommendations': final}),200
 
-@main.route('/display_favourite_recipes')
+#returns all favourite recipes
+@main.route('/display_favourite_recipes',methods=['GET'])
 def display_recipes():
     #print("NOW HERE")
     fav_list = Favorites.query.all()
     favs = []
     
+    if not fav_list:
+        return "No Favorites Yet",204
     
 
     for fav in fav_list:
@@ -102,4 +123,4 @@ def display_recipes():
         'ingredients':fav.ingredients,'image':fav.image,'site':fav.site})
         
     
-    return jsonify({'favorites': favs})
+    return jsonify({'favorites': favs}),200
